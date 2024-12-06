@@ -1,4 +1,3 @@
-if boyfriendName == 'godshaggy' then
 local sh_r = 600
 local bfControlY = 0
 local endCheck = false
@@ -25,27 +24,11 @@ local lastGhost = 0
 local fps = 0
 
 function onCreate()
-	makeAnimatedLuaSprite('legs', 'characters/shaggy_god', 0, 0)
+	makeAnimatedLuaSprite('legs', 'characters/shaggy_godboyfriend', 0, 0)
 	addAnimationByPrefix('legs', 'Instance', 'solo_legs', 24, false)
 	addOffset('legs', 'Instance', 0, 0)
 	setObjectOrder('legs', getObjectOrder('boyfriendGroup'))
-	addLuaSprite('legs', false);
-end
-
-local cut = 0
-function onShaggyStart()
-	cut = cut + 1
-	if not isStoryMode or cut == 1 and seenCutscene then
-		--nothing
-	elseif cut == 1 then
-		setProperty('legs.alpha', 0)
-		setProperty('camFollow.x', getProperty('boyfriend.x')+200)
-		setProperty('camFollow.y', getProperty('boyfriend.y')+300)
-		runTimer('snap', 2)
-		return Function_Stop;
-	elseif cut == 2 then
-		songStarted = true
-	end
+	addLuaSprite('legs', false)
 end
 
 function onBeatHit()
@@ -60,25 +43,18 @@ end
 
 
 function onUpdate(elapsed)
-	if not endCheck and allowCountdown then
 		fps = fps + elapsed
-		if fps >= 1/10 then
-			if getProperty('legs.alpha') > 0 then
-				createGhost('legs','FFFFF', getProperty('legs.animation.curAnim.name'), getProperty('boyfriend.imageFile'))
-			end
-			createGhost('dad', 'FFFFF', getProperty('boyfriend.animation.curAnim.name'), getProperty('boyfriend.imageFile'))
-			fps = 0
-		end
+		createGhost('legs','FFFFF', getProperty('legs.animation.curAnim.name'), getProperty('boyfriend.imageFile'))
+		createGhost('boyfriend', 'FFFFF', getProperty('boyfriend.animation.curAnim.name'), getProperty('boyfriend.imageFile'))
+		fps = 0
+
 		rotRateShag = curStep / 9.25
 		sh_toy = -2450 + -math.sin(rotRateShag * 2) * sh_r * 0.45
 		sh_tox = -330 - math.cos(rotRateShag) * sh_r
-		if shag_fly and curStep > 0 then
-			setProperty('boyfriend.x', getProperty('boyfriend.x') + ((sh_tox - getProperty('boyfriend.x')) / 12))
-			setProperty('boyfriend.y', getProperty('boyfriend.y') + ((sh_toy - getProperty('boyfriend.y')) / 12))
-		elseif shag_fly and curStep <= 0 then
-			setProperty('dad.x', getProperty('boyfriend.x') + (((sh_tox+800) - getProperty('boyfriend.x')) / 12))
-			setProperty('dad.y', getProperty('boyfriend.y') + ((sh_toy - getProperty('boyfriend.y')) / 12))
-		end
+		setProperty('boyfriend.x', getProperty('boyfriend.x') + ((sh_tox - getProperty('boyfriend.x')) / 12))
+		setProperty('boyfriend.y', getProperty('boyfriend.y') + ((sh_toy - getProperty('boyfriend.y')) / 12))
+		setProperty('boyfriend.x', getProperty('boyfriend.x') + (((sh_tox+800) - getProperty('boyfriend.x')) / 12))
+		setProperty('boyfriend.y', getProperty('boyfriend.y') + ((sh_toy - getProperty('boyfriend.y')) / 12))
 
 		if getProperty('boyfriend.animation.curAnim.name') == "idle" then
 			setProperty('boyfriend.angle', math.sin(rotRateShag) * sh_r * 0.07 / 4)
@@ -93,6 +69,37 @@ function onUpdate(elapsed)
 				setProperty('legs.y', getProperty('legs.y') + getProperty('legs.angle')-getProperty('boyfriend.angle')*2)
 			end
 		end
+	if (shag_fly and songStarted) then
+		cameraSetTarget('boyfriend')
+		setProperty('mouse.alpha', 0)
+	elseif (not shag_fly and allowCountdown) or mustHitSection then
+		cameraSetTarget('boyfriend')
+		if bfControlY > 2000 and not collected then
+			setProperty('mouse.alpha', 1)
+		else
+			setProperty('mouse.alpha', 0)
+		end
 	end
 end
+function createGhost(character, color, anim, location)
+    local spriteName = character..'Ghost'..lastGhost
+    makeAnimatedLuaSprite(spriteName, location, getProperty(character..'.x'), getProperty(character..'.y'))
+    scaleObject(spriteName, getProperty(character..'.scale.x'), getProperty(character..'.scale.y'))
+    setProperty(spriteName..'.color',getColorFromHex(color))
+    setProperty(spriteName..'.alpha', getProperty(character..'.alpha') - 0.4)
+    doTweenAlpha(spriteName..'Bye',spriteName, 0, 0.5, 'linear')
+    setObjectOrder(spriteName,getObjectOrder('boyfriendGroup')-2)
+    addGhostAnim(character,anim)
+    addLuaSprite(spriteName,false)
+    setProperty(spriteName..'.flipX', getProperty(character..'.flipX'))
+    setProperty(spriteName..'.angle', getProperty(character..'.angle'))
+    objectPlayAnimation(character..'Ghost'..lastGhost,anim,true)
+    lastGhost = lastGhost + 1
+end
+
+function addGhostAnim(character, name)
+	local spriteAnim = character..'Ghost'..lastGhost
+	addAnimationByPrefix(spriteAnim, name, getProperty(character..'.animation.frameName'), getProperty(character..'.animation.curAnim.frameRate'), getProperty(character..'.animation.curAnim.looped'))
+	setProperty(spriteAnim..'.offset.x', getProperty(character..'.offset.x'))
+	setProperty(spriteAnim..'.offset.y', getProperty(character..'.offset.y'))
 end
