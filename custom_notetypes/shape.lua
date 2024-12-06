@@ -10,7 +10,7 @@ function onCreate()
 			--small fix
 			if getPropertyFromGroup('unspawnNotes', i, 'isSustainNote') then
 				runHaxeCode([[
-				var lol = ['A', 'B', 'C', 'D', 'E', 'I'];
+				var lol = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R'];
 					var daNote = game.unspawnNotes[]]..tostring(i)..[[];
 					daNote.animation.play(lol[daNote.noteData] + 'hold');
 				]])
