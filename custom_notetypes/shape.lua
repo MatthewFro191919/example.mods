@@ -6,7 +6,7 @@ function onCreate()
 			setPropertyFromGroup('unspawnNotes', i, 'antialiasing', false)
 			setPropertyFromGroup('unspawnNotes', i, 'scale.x', 0.60) 
 			setPropertyFromGroup('unspawnNotes', i, 'scale.y', 0.60)
-                        setPropertyFromGroup('unspawnNotes', i, 'offsetX', 4);
+                        setPropertyFromGroup('unspawnNotes', i, 'offsetX', 4)
 			--small fix
 			if getPropertyFromGroup('unspawnNotes', i, 'isSustainNote') then
 				runHaxeCode([[
