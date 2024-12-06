@@ -3,6 +3,9 @@ function onCreate()
 		if getPropertyFromGroup('unspawnNotes', i, 'noteType') == 'alphabet' then
 			setPropertyFromGroup('unspawnNotes', i, 'texture', 'notes/NOTE_recursed')
 			setPropertyFromGroup('unspawnNotes', i, 'antialiasing', false)
+			setPropertyFromGroup('unspawnNotes', i, 'scale.x', 0.60)
+			setPropertyFromGroup('unspawnNotes', i, 'scale.y', 0.60)
+			setPropertyFromGroup('unspawnNotes', i, 'offsetX', 4)
 			end
 		end
 	end
