@@ -7,7 +7,7 @@ function onCreate()
 			setPropertyFromGroup('unspawnNotes', i, 'noteSplashDisabled', false);
 			setPropertyFromGroup('unspawnNotes', i, 'scale.x', 0.50) 
 			setPropertyFromGroup('unspawnNotes', i, 'scale.y', 0.50)
-                   	setPropertyFromGroup('unspawnNotes', i, 'offsetX', 20);
+                   	setPropertyFromGroup('unspawnNotes', i, 'offsetX', 4);
            	
 		        if getPropertyFromGroup('unspawnNotes', i, 'isSustainNote') then
 				setPropertyFromGroup('unspawnNotes', i, 'offset.x', '-3')
