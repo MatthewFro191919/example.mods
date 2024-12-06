@@ -4,8 +4,9 @@ function onCreate()
 		if getPropertyFromGroup('unspawnNotes', i, 'noteType') == '3d_notes' then
 			setPropertyFromGroup('unspawnNotes', i, 'texture', 'notes/NOTE_assets_Shape')
 			setPropertyFromGroup('unspawnNotes', i, 'antialiasing', false)
-			setPropertyFromGroup('unspawnNotes', i, 'scale.x', 0.60) 
+			setPropertyFromGroup('unspawnNotes', i, 'scale.x', 0.60)
 			setPropertyFromGroup('unspawnNotes', i, 'scale.y', 0.60)
+			setPropertyFromGroup('unspawnNotes', i, 'offsetX', 4)
 			--small fix
 			if getPropertyFromGroup('unspawnNotes', i, 'isSustainNote') then
 				runHaxeCode([[
